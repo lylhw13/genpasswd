@@ -36,7 +36,7 @@ struct record_entry **active_entry;
 unsigned int active_nr, active_alloc;
 
 
-extern char *xmalloc(size_t size);
+// extern char *xmalloc(size_t size);
 
 /* hash fun */
 extern char *sha_to_hex(unsigned char *sha1);
@@ -48,7 +48,7 @@ extern char *sha512_multi_salt(const char *passwd, const char *salt, int num);
 extern int read_records_decry(void);
 extern int write_records_encry(void);
 
-extern int read_records(void);
+extern int read_records(void);  /* for test */
 extern int write_records(void); /* for test */
 
 extern void list_records(void);
@@ -63,3 +63,7 @@ extern void remove_entry(struct record_entry *re);
 
 /* password */
 extern char * init_passwd(void);
+
+// normal function
+
+

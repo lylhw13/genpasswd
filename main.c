@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
     char *password = "hello world";
     char *passfilename = "passwd.txt";
     char *cachefilename = "index.cache";
-    char *tag = "baidu";
+    char *tag = "hahaha";
     int hashtimes = 1;
     char *passwd_hash;
     char *tag_hash;
