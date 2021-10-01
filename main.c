@@ -14,13 +14,6 @@ unsigned short iv_offset = 100; /* todo check the offset */
 unsigned char key[KEY_LEN + 1]; /* A 256 bit key, 32 byte */
 unsigned char iv[IV_LEN + 1];  /* A 128 bit IV, 16 byte */
 
-static char* tags[] ={"z", "z", "hello world", "your passwd", "your passwd", "hahaha", "acer", "screen shot 1234"};
-
-static int error(const char *str)
-{
-    fprintf(stderr, "error: %s\n", str);
-    return -1;
-}
 
 void usage(int status)
 {
@@ -104,11 +97,9 @@ int main(int argc, char *argv[])
     struct record_entry * re;
     int entries;
 
-    char *password = "hello world";
-    char *passfilename = "passwd.txt";
-    char *cachefilename = "index.cache";
-    char *tag = "hahaha";
     int hashtimes = 1;
+    char *password;
+    char *tag;
     char *passwd_hash;
     char *tag_hash;
 

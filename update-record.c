@@ -1,15 +1,10 @@
 #include "generic.h"
 #include "encrypt.h"
 
-static char *passfilename = "passwd.txt";
+static char *passwdfile = "passwd.txt";
 static char* tags[] ={"z", "z", "hello world", "your passwd", "your passwd", "hahaha", "acer", "screen shot 1234"};
 static char *example = "hello hahaha";
 
-static int error(const char* string) 
-{
-    fprintf(stderr, "error: %s\n", string);
-    return -1;
-}
 
 static int tag_compare(char *tag1, int len1, char *tag2, int len2)
 {
@@ -176,9 +171,9 @@ static int init_write_record_map(void)
 
     hdr.entries = active_nr;
 
-    fd = open(passfilename, O_RDWR | O_CREAT | O_TRUNC, 0600);
+    fd = open(passwdfile, O_RDWR | O_CREAT | O_TRUNC, 0600);
     if (fd < 0) {
-        fprintf(stderr, "error: fail open %s\n", passfilename);
+        fprintf(stderr, "error: fail open %s\n", passwdfile);
         return -1;
     }
     fd_size = cal_records_len();
@@ -288,7 +283,7 @@ int read_content_and_decry(char **plaintext)
     int n;
 
     errno = ENOENT;
-    fd = open(passfilename, O_RDONLY);
+    fd = open(passwdfile, O_RDONLY);
     if (fd < 0) 
         return (errno == ENOENT) ? 0 : error("open failed");
 
@@ -330,7 +325,7 @@ int read_content(char **plaintext)
     int n;
 
     errno = ENOENT;
-    fd = open(passfilename, O_RDONLY);
+    fd = open(passwdfile, O_RDONLY);
     if (fd < 0) 
         return (errno == ENOENT) ? 0 : error("open failed");
 
@@ -419,9 +414,9 @@ int write_records_encry(void)
     BIO_dump_fp(stderr, (const char *)plaintext, plain_size);
     BIO_dump_fp(stderr, (const char *)ciphertext, cipher_size);
 
-    fd = open(passfilename, O_RDWR | O_CREAT | O_TRUNC, 0600);
+    fd = open(passwdfile, O_RDWR | O_CREAT | O_TRUNC, 0600);
     if (fd < 0) {
-        perror(passfilename);
+        perror(passwdfile);
         return -1;
     }
 
@@ -442,18 +437,6 @@ int write_records_encry(void)
     return 0;
 }
 
-// void list_records(void)
-// {
-//     int i;
-//     unsigned long size;
-//     struct record_entry *re;
-//     for (i = 0; i < active_nr; ++i) 
-//     {
-//         re = active_entry[i];
-//         printf("%d",  i + 1, re->tag);
-//     }   
-// }
-
 int write_records(void)
 {
     unsigned int expect_nr;
@@ -464,9 +447,9 @@ int write_records(void)
 
     hdr.entries = active_nr;
 
-    fd = open(passfilename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+    fd = open(passwdfile, O_WRONLY | O_CREAT | O_TRUNC, 0600);
     if (fd < 0) {
-        fprintf(stderr, "error: fail open %s\n", passfilename);
+        fprintf(stderr, "error: fail open %s\n", passwdfile);
         return -1;
     }
 

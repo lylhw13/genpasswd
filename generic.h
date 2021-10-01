@@ -18,6 +18,7 @@
 
 #define LOCK_FILE ".index.lock"
 #define RECORD_FILE "passwd.txt"
+// #define password
 
 #define DECRY_ERR -2
 
@@ -66,4 +67,32 @@ extern char * init_passwd(void);
 
 // normal function
 
+static int error(const char* string) 
+{
+    fprintf(stderr, "error: %s\n", string);
+    return -1;
+}
 
+static char *xmalloc(size_t size)
+{
+    char *ptr;
+    ptr = (char *)malloc(size);
+    if (NULL == ptr) {
+        perror("malloc");
+        exit(1);
+    }
+    return ptr;
+}
+
+
+static char *xstrdup(char *ori)
+{
+   return strcpy( xmalloc( strlen( ori) + 1), ori);
+}
+
+
+static void xfree(void *ptr)
+{
+    if (ptr)
+        free(ptr);
+}
