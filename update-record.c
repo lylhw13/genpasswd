@@ -6,7 +6,7 @@ static char* tags[] ={"z", "z", "hello world", "your passwd", "your passwd", "ha
 static char *example = "hello hahaha";
 
 
-static int tag_compare(char *tag1, int len1, char *tag2, int len2)
+static int tag_compare(const char *tag1, int len1, const char *tag2, int len2)
 {
     int len = len1 < len2 ? len1 : len2 ;
     int cmp;
@@ -275,8 +275,8 @@ void copy_records_to_buffer(unsigned char **buf)
 
 int read_content_and_decry(char **plaintext)
 {
-    unsigned char *ciphertext, *decryptedtext;
-    int ciphertext_len, decryptedtext_len;
+    unsigned char *decryptedtext;
+    int decryptedtext_len;
     int fd;
     unsigned long size;
     void *map;
@@ -317,7 +317,6 @@ int read_content_and_decry(char **plaintext)
 int read_content(char **plaintext)
 {
     unsigned char *record;
-    int record_len, ciphertext_len, decryptedtext_len;
     int fd;
     unsigned long size;
     void *map;
@@ -436,7 +435,6 @@ int write_records_encry(void)
 
 int write_records(void)
 {
-    unsigned int expect_nr;
     struct record_header hdr = {CACHE_SIGNATURE, 1, 0};
     struct record_entry *re;
     int i,  size;

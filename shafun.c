@@ -32,20 +32,20 @@ char * sha_to_hex(unsigned char *sha512)
 }
 
 
-char * sha512_once(const char *passwd)
+unsigned char * sha512_once(const char *passwd)
 {
     static unsigned char sha512[SHA512_DIGEST_LENGTH];
     SHA512_CTX c;
     SHA512_Init(&c);
-    SHA512(passwd, strlen(passwd), sha512);
+    SHA512((const unsigned char *)passwd, strlen(passwd), sha512);
     return sha512;
 }
 
-char * sha512_multi(const char *passwd, int num)
+unsigned char * sha512_multi(const char *passwd, int num)
 {
     int i;
-    unsigned char buffer[BUFF_LENGTH];
-    char *sha_res;
+    char buffer[BUFF_LENGTH];
+    unsigned char *sha_res;
     strcpy(buffer, passwd);
 
     if (num <=0)
@@ -59,11 +59,11 @@ char * sha512_multi(const char *passwd, int num)
     return sha_res;
 }
 
-char * sha512_multi_salt(const char *passwd, const char *salt, int num)
+unsigned char * sha512_multi_salt(const char *passwd, const char *salt, int num)
 {
     int len = max(strlen(passwd) + strlen(salt), BUFF_LENGTH);
-    char *res;
-    unsigned char *buffer = malloc(len);
+    unsigned char *res;
+    char *buffer = (char *)malloc(len);
     strcpy(buffer, passwd);
     strcat(buffer, salt);
     res = sha512_multi(buffer, num);

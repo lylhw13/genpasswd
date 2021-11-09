@@ -73,16 +73,16 @@ static int error(const char* string)
     return -1;
 }
 
-static char *xmalloc(size_t size)
-{
-    char *ptr;
-    ptr = (char *)malloc(size);
-    if (NULL == ptr) {
-        perror("malloc");
-        exit(1);
-    }
-    return ptr;
-}
+// static char *xmalloc(size_t size)
+// {
+//     char *ptr;
+//     ptr = (char *)malloc(size);
+//     if (NULL == ptr) {
+//         perror("malloc");
+//         exit(1);
+//     }
+//     return ptr;
+// }
 
 
 // static char *xstrdup(char *ori)
