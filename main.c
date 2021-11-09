@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
     write_records_encry();
 out1:
     cleanup();
-out2:
+// out2:
     unlink(LOCK_FILE);
     return 0;
 }

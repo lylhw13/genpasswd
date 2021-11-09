@@ -155,7 +155,7 @@ static int init_write_record_map(void)
     unsigned int expect_nr;
     struct record_header hdr = {CACHE_SIGNATURE, 1, 0};
     struct record_entry *re;
-    int n, i, taglen, size;
+    int i, size;
     int fd;
     void *map;
     unsigned long offset;
@@ -280,7 +280,6 @@ int read_content_and_decry(char **plaintext)
     int fd;
     unsigned long size;
     void *map;
-    int n;
 
     errno = ENOENT;
     fd = open(passwdfile, O_RDONLY);
@@ -317,12 +316,11 @@ int read_content_and_decry(char **plaintext)
 
 int read_content(char **plaintext)
 {
-    unsigned char *record, *ciphertext, *decryptedtext;
+    unsigned char *record;
     int record_len, ciphertext_len, decryptedtext_len;
     int fd;
     unsigned long size;
     void *map;
-    int n;
 
     errno = ENOENT;
     fd = open(passwdfile, O_RDONLY);
@@ -395,7 +393,6 @@ int write_records_encry(void)
 {
     unsigned long plain_size, cipher_size;
     unsigned char *plaintext, *ciphertext;
-    struct record_entry *re;
     void *map;
     int fd;
 
@@ -442,7 +439,7 @@ int write_records(void)
     unsigned int expect_nr;
     struct record_header hdr = {CACHE_SIGNATURE, 1, 0};
     struct record_entry *re;
-    int n, i, taglen, size;
+    int i,  size;
     int fd;
 
     hdr.entries = active_nr;

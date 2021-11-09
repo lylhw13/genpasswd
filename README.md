@@ -1,3 +1,4 @@
+```txt
 Usage: genpasswd [OPTION][ARG]
    or: genpasswd [OPTION]
 
@@ -8,3 +9,4 @@ Usage: genpasswd [OPTION][ARG]
     -h          show usage
 
     without argument, the program will generate a random password
+```

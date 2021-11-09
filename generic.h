@@ -85,14 +85,14 @@ static char *xmalloc(size_t size)
 }
 
 
-static char *xstrdup(char *ori)
-{
-   return strcpy( xmalloc( strlen( ori) + 1), ori);
-}
+// static char *xstrdup(char *ori)
+// {
+//    return strcpy( xmalloc( strlen( ori) + 1), ori);
+// }
 
 
-static void xfree(void *ptr)
-{
-    if (ptr)
-        free(ptr);
-}
+// static void xfree(void *ptr)
+// {
+//     if (ptr)
+//         free(ptr);
+// }

@@ -19,8 +19,9 @@ char * sha_to_hex(unsigned char *sha512)
 	char *buf = buffer;
 	int i;
 
-    if (!sha512)
+    if (!sha512) {
         return NULL;
+    }
 
 	for (i = 0; i < SHA512_DIGEST_LENGTH; i++) {
 		unsigned int val = *sha512++;
@@ -60,7 +61,6 @@ char * sha512_multi(const char *passwd, int num)
 
 char * sha512_multi_salt(const char *passwd, const char *salt, int num)
 {
-    int i;
     int len = max(strlen(passwd) + strlen(salt), BUFF_LENGTH);
     char *res;
     unsigned char *buffer = malloc(len);
