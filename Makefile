@@ -7,10 +7,11 @@ CFLAGS += -g
 endif
 
 PROG = genpasswd.out
+SRC = ${wildcard *.h *.c}
 
 all: $(PROG)
 
-genpasswd.out: generic.h encrypt.h encrypt.c shafun.c update-record.c getpasswd.c main.c
+$(PROG): $(SRC)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
 clean:
