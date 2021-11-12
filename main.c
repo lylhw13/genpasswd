@@ -12,10 +12,16 @@ static int taghash_len = 16;
 unsigned short key_offset= 64;  /* todo check the offset */
 unsigned short iv_offset = 100; /* todo check the offset */
 unsigned char key[KEY_LEN + 1]; /* A 256 bit key, 32 byte */
-unsigned char iv[IV_LEN + 1];  /* A 128 bit IV, 16 byte */
+unsigned char iv[IV_LEN + 1];   /* A 128 bit IV, 16 byte */
 
+enum OP_type {
+    INIT_RECORDS,
+    LIST_RECORDS,
+    INSERT_RECORDS,
+    REMOVE_RECORDS,
+};
 
-void usage(int status)
+static void usage(int status)
 {
     printf("\
 Usage: %s [OPTION][ARG]\n\
@@ -31,24 +37,12 @@ Usage: %s [OPTION][ARG]\n\
     exit(status);
 }
 
-/*
-* procedure
-* 1. parse argument
-* 2. configure file hash times aes key start iv start password length   // to do later
-* 3. generate a random password
-* 4. password hash + tag hash
-* 5. hash times greater than 1e6
-* 6. basic procedure
-*/
-#include <stdlib.h>
-
-char * generate_random_password(void)
+static char * generate_random_password(void)
 {
     int length;
     char str[16];
     char *hash;
     int base = 9973;    /* 9973 is a random prime number */
-
     int hashtimes = random() % base + 97;
     time_t now = time(0);
 
@@ -62,27 +56,21 @@ char * generate_random_password(void)
 }
 
 
-char * init_ctx(char *passwd)
+static char * init_ctx(char *passwd)
 {
     char * hash;
     hash = sha_to_hex(sha512_multi(passwd, hashtimes));
+
     memcpy(key, hash + key_offset, KEY_LEN);
     key[KEY_LEN] = '\0';
     memcpy(iv, hash + iv_offset, IV_LEN);
     iv[IV_LEN] = '\0';
 
-    printf("key is %s\n", key);
-    printf("iv is %s\n", iv);
+    // printf("key is %s\n", key);
+    // printf("iv is %s\n", iv);
     enc_ctx_init(key, iv);
     return hash;
 }
-
-enum OP_type {
-    INIT_RECORDS,
-    LIST_RECORDS,
-    INSERT_RECORDS,
-    REMOVE_RECORDS,
-};
 
 int main(int argc, char *argv[])
 {
@@ -142,23 +130,26 @@ int main(int argc, char *argv[])
     lockfd = open(LOCK_FILE, O_RDWR | O_CREAT | O_EXCL, 0600);
     if (lockfd < 0) {
         if (errno == EACCES)
-            error("unable to start: Permission denied");
+            error("Unable to start: Permission denied.");
 
         if (errno == EEXIST)
-            error("unable to start: More than one process access the directory");
+            error("Unable to start: More than one process access the directory.");
         
-        return error("unable to create lockfile");
+        return error("Unable to create lockfile");
     }
     
     if (op_type == INIT_RECORDS) {
         passwd = init_passwd();
         init_ctx(passwd);
-        write_records_encry();
+        if (write_records_encry() == 0)
+            puts("Init records successed");
+        else 
+            puts("Fail to init records");
         goto out1;
-
     }
 
     /* verify password three times */
+    passwd_hash = NULL;
     for (i = 0; i < 3; ++i) {
         passwd = getpass("Password: ");
         passwd_hash = init_ctx(passwd);
@@ -177,7 +168,7 @@ int main(int argc, char *argv[])
         break;
     }
 
-    if (entries < 0)
+    if (entries < 0 || passwd_hash == NULL)
         goto out1;
     
 

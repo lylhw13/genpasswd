@@ -278,7 +278,7 @@ int read_records_decry(void)
 
     errno = EBUSY;
     if (active_entry) 
-        error("more than one thread");
+        error("More than one thread");
     
     record_len = read_content_and_decry(&record_plain);
     if (record_len <= 0) {
@@ -287,14 +287,13 @@ int read_records_decry(void)
         if (record_len == DECRY_ERR) {
             return DECRY_ERR;
         }
-        error("read records file failed");
+        error("Read records file failed");
     }
 
     entries = parse_record_from_buffer(record_plain);
     if ( entries < 0) 
-        error("parse record failed");
+        error("Parse record failed");
     
-
     return entries;
 }
 

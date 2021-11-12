@@ -6,10 +6,10 @@ int error(const char* string)
     return -1;
 }
 
-char *xmalloc(size_t size)
+void *xmalloc(size_t size)
 {
-    char *ptr;
-    ptr = (char *)malloc(size);
+    void *ptr;
+    ptr = malloc(size);
     if (NULL == ptr) {
         perror("malloc");
         exit(1);

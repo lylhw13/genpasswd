@@ -35,10 +35,7 @@ struct record_entry {
 struct record_entry **active_entry;
 unsigned int active_nr, active_alloc;
 
-
-// extern char *xmalloc(size_t size);
-
-/* hash fun */
+/* sha fun */
 extern char *sha_to_hex(unsigned char *sha1);
 extern unsigned char *sha512_once(const char *passwd);
 extern unsigned char *sha512_multi(const char *passwd, int num);
@@ -66,7 +63,7 @@ extern char * init_passwd(void);
 
 /* utility */
 extern int error(const char*string);
-extern char *xmalloc(size_t size);
+extern void *xmalloc(size_t size);
 
 
 // static char *xstrdup(char *ori)
