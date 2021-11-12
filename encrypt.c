@@ -3,7 +3,7 @@
 static EVP_CIPHER_CTX *d_ctx;
 static EVP_CIPHER_CTX *e_ctx;
 
-void handleErrors(void)
+static void handleErrors(void)
 {
     ERR_print_errors_fp(stderr);
     abort();

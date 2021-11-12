@@ -30,7 +30,7 @@ struct record_header {
 
 struct record_entry {
     unsigned short taglen;
-    unsigned char tag[0];
+    char tag[0];
 };
 
 struct record_entry **active_entry;
@@ -41,9 +41,9 @@ unsigned int active_nr, active_alloc;
 
 /* hash fun */
 extern char *sha_to_hex(unsigned char *sha1);
-extern char *sha512_once(const char *passwd);
-extern char *sha512_multi(const char *passwd, int num);
-extern char *sha512_multi_salt(const char *passwd, const char *salt, int num);
+extern unsigned char *sha512_once(const char *passwd);
+extern unsigned char *sha512_multi(const char *passwd, int num);
+extern unsigned char *sha512_multi_salt(const char *passwd, const char *salt, int num);
 
 /* manipulate records */
 extern int read_records_decry(void);

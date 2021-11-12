@@ -2,8 +2,8 @@
 #include "encrypt.h"
 
 static char *passwdfile = "passwd.txt";
-static char* tags[] ={"z", "z", "hello world", "your passwd", "your passwd", "hahaha", "acer", "screen shot 1234"};
-static char *example = "hello hahaha";
+// static char* tags[] ={"z", "z", "hello world", "your passwd", "your passwd", "hahaha", "acer", "screen shot 1234"};
+// static char *example = "hello hahaha";
 
 
 static int tag_compare(const char *tag1, int len1, const char *tag2, int len2)
@@ -150,67 +150,67 @@ static int cal_records_len()
 }
 
 
-static int init_write_record_map(void)
-{
-    unsigned int expect_nr;
-    struct record_header hdr = {CACHE_SIGNATURE, 1, 0};
-    struct record_entry *re;
-    int i, size;
-    int fd;
-    void *map;
-    unsigned long offset;
-    unsigned long fd_size;
+// static int init_write_record_map(void)
+// {
+//     unsigned int expect_nr;
+//     struct record_header hdr = {CACHE_SIGNATURE, 1, 0};
+//     struct record_entry *re;
+//     int i, size;
+//     int fd;
+//     void *map;
+//     unsigned long offset;
+//     unsigned long fd_size;
     
-    expect_nr = sizeof(tags) / sizeof(char *);
-    active_alloc = alloc_nr(expect_nr);
-    active_entry = calloc(active_alloc, sizeof(struct record_entry*));
+//     expect_nr = sizeof(tags) / sizeof(char *);
+//     active_alloc = alloc_nr(expect_nr);
+//     active_entry = calloc(active_alloc, sizeof(struct record_entry*));
 
-    for (i = 0; i < expect_nr; ++i) {
-        add_entry_by_tag(tags[i]);
-    }
+//     for (i = 0; i < expect_nr; ++i) {
+//         add_entry_by_tag(tags[i]);
+//     }
 
-    hdr.entries = active_nr;
+//     hdr.entries = active_nr;
 
-    fd = open(passwdfile, O_RDWR | O_CREAT | O_TRUNC, 0600);
-    if (fd < 0) {
-        fprintf(stderr, "error: fail open %s\n", passwdfile);
-        return -1;
-    }
-    fd_size = cal_records_len();
+//     fd = open(passwdfile, O_RDWR | O_CREAT | O_TRUNC, 0600);
+//     if (fd < 0) {
+//         fprintf(stderr, "error: fail open %s\n", passwdfile);
+//         return -1;
+//     }
+//     fd_size = cal_records_len();
 
-    printf("fd_size %ld\n", fd_size);
+//     printf("fd_size %ld\n", fd_size);
 
-    if (ftruncate(fd, fd_size) < 0) {
-        error("error: ftruncate");
-    }
+//     if (ftruncate(fd, fd_size) < 0) {
+//         error("error: ftruncate");
+//     }
 
-    map = mmap(0, fd_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-    if (map == MAP_FAILED) {
-        perror("mmap");
-        return -1;
-    }
+//     map = mmap(0, fd_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+//     if (map == MAP_FAILED) {
+//         perror("mmap");
+//         return -1;
+//     }
 
-    memcpy(map, &hdr, sizeof(hdr));
+//     memcpy(map, &hdr, sizeof(hdr));
 
-    offset = sizeof(hdr);
+//     offset = sizeof(hdr);
 
-    for (i = 0; i < active_nr; ++i) {
-        re = active_entry[i];
-        size = re_size(re);
-        memcpy(map + offset, re, size);
-        offset += size;
-        // free(re);
-    }
+//     for (i = 0; i < active_nr; ++i) {
+//         re = active_entry[i];
+//         size = re_size(re);
+//         memcpy(map + offset, re, size);
+//         offset += size;
+//         // free(re);
+//     }
 
-    munmap(map, fd_size);
-    close(fd);
+//     munmap(map, fd_size);
+//     close(fd);
 
-    free(active_entry);
-    return 0;
-}
+//     free(active_entry);
+//     return 0;
+// }
 
 static struct stat st;
-static char *tmpfilename = "tmp.txt";
+// static char *tmpfilename = "tmp.txt";
 
 int parse_record_from_buffer(char *map)
 {
@@ -248,6 +248,7 @@ int parse_record_from_buffer(char *map)
 
 unmap:
     munmap(map, size);
+    return 0;
     // return error("parse record failed");
 }
 
@@ -307,7 +308,7 @@ int read_content_and_decry(char **plaintext)
 
     decryptedtext[decryptedtext_len] = '\0';
     
-    *plaintext = decryptedtext;
+    *plaintext = (char *)decryptedtext;
 
     BIO_dump_fp(stdout, (const char *)decryptedtext, decryptedtext_len);
 
@@ -316,7 +317,7 @@ int read_content_and_decry(char **plaintext)
 
 int read_content(char **plaintext)
 {
-    unsigned char *record;
+    // unsigned char *record;
     int fd;
     unsigned long size;
     void *map;
