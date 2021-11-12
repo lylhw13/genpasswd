@@ -1,7 +1,5 @@
+#include "generic.h"
 #include <openssl/sha.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
 #define BUFF_LENGTH SHA512_DIGEST_LENGTH * 2 + 1
 
@@ -63,7 +61,7 @@ unsigned char * sha512_multi_salt(const char *passwd, const char *salt, int num)
 {
     int len = max(strlen(passwd) + strlen(salt), BUFF_LENGTH);
     unsigned char *res;
-    char *buffer = (char *)malloc(len);
+    char *buffer = (char *)xmalloc(len);
     strcpy(buffer, passwd);
     strcat(buffer, salt);
     res = sha512_multi(buffer, num);

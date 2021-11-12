@@ -32,11 +32,6 @@ Usage: %s [OPTION][ARG]\n\
 }
 
 /*
- * TODO
- * every entry has a len represent to length of the password
- */
-
-/*
 * procedure
 * 1. parse argument
 * 2. configure file hash times aes key start iv start password length   // to do later
@@ -62,7 +57,6 @@ char * generate_random_password(void)
     snprintf(str, length + 1, "%d", (int)now);
 
     hash = sha_to_hex(sha512_multi(str, hashtimes));
-    // printf("%d\t %d\t %s\t %s\n", (int)now, hashtimes, str, hash);
     printf("Random passwd is %.*s\n", taghash_len, hash);
     return hash;
 }
@@ -98,10 +92,8 @@ int main(int argc, char *argv[])
     int entries;
 
     int hashtimes = 1;
-    char *password;
-    char *tag;
-    char *passwd_hash;
-    char *tag_hash;
+    char *passwd, *passwd_hash;
+    char *tag, *tag_hash;
 
     if (argc == 1) {
         generate_random_password();
@@ -159,8 +151,8 @@ int main(int argc, char *argv[])
     }
     
     if (op_type == INIT_RECORDS) {
-        password = init_passwd();
-        init_ctx(password);
+        passwd = init_passwd();
+        init_ctx(passwd);
         write_records_encry();
         goto out1;
 
@@ -168,8 +160,8 @@ int main(int argc, char *argv[])
 
     /* verify password three times */
     for (i = 0; i < 3; ++i) {
-        password = getpass("Password: ");
-        passwd_hash = init_ctx(password);
+        passwd = getpass("Password: ");
+        passwd_hash = init_ctx(passwd);
 
         entries = read_records_decry();
         if (entries < 0) {
@@ -200,9 +192,9 @@ int main(int argc, char *argv[])
         goto out1;
     }
     else if (op_type == INSERT_RECORDS) {
-        printf("password %s tag %s\n", password, tag);
+        printf("password %s tag %s\n", passwd, tag);
         add_entry_by_tag(tag);
-        tag_hash = sha_to_hex(sha512_multi_salt(password, tag, hashtimes));
+        tag_hash = sha_to_hex(sha512_multi_salt(passwd, tag, hashtimes));
         printf("The password for tag %s is %.*s\n", tag, taghash_len, tag_hash);
     }
     else if (op_type == REMOVE_RECORDS) {

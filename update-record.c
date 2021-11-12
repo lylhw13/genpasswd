@@ -2,8 +2,6 @@
 #include "encrypt.h"
 
 static char *passwdfile = "passwd.txt";
-// static char* tags[] ={"z", "z", "hello world", "your passwd", "your passwd", "hahaha", "acer", "screen shot 1234"};
-// static char *example = "hello hahaha";
 
 
 static int tag_compare(const char *tag1, int len1, const char *tag2, int len2)
@@ -56,7 +54,7 @@ static struct record_entry* construct_record_entry(char *tag)
     taglen = strlen(tag);
     size = record_entry_size(taglen);
 
-    re = (struct record_entry *)malloc(size);
+    re = (struct record_entry *)xmalloc(size);
     memset(re, 0, size);
     re->taglen = taglen;
     memcpy(re->tag, tag, taglen);
@@ -129,15 +127,6 @@ void remove_entry(struct record_entry *re)
     remove_entry_by_tag(re->tag);
 }
 
-// static void free_active_entry()
-// {
-//     int i;
-//     for (i = 0; i< active_nr; ++i) {
-//         free(active_entry[i]);
-//     }
-//     free(active_entry);
-// }
-
 static int cal_records_len()
 {
     int i, res = 0;
@@ -148,66 +137,6 @@ static int cal_records_len()
     }
     return res;
 }
-
-
-// static int init_write_record_map(void)
-// {
-//     unsigned int expect_nr;
-//     struct record_header hdr = {CACHE_SIGNATURE, 1, 0};
-//     struct record_entry *re;
-//     int i, size;
-//     int fd;
-//     void *map;
-//     unsigned long offset;
-//     unsigned long fd_size;
-    
-//     expect_nr = sizeof(tags) / sizeof(char *);
-//     active_alloc = alloc_nr(expect_nr);
-//     active_entry = calloc(active_alloc, sizeof(struct record_entry*));
-
-//     for (i = 0; i < expect_nr; ++i) {
-//         add_entry_by_tag(tags[i]);
-//     }
-
-//     hdr.entries = active_nr;
-
-//     fd = open(passwdfile, O_RDWR | O_CREAT | O_TRUNC, 0600);
-//     if (fd < 0) {
-//         fprintf(stderr, "error: fail open %s\n", passwdfile);
-//         return -1;
-//     }
-//     fd_size = cal_records_len();
-
-//     printf("fd_size %ld\n", fd_size);
-
-//     if (ftruncate(fd, fd_size) < 0) {
-//         error("error: ftruncate");
-//     }
-
-//     map = mmap(0, fd_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-//     if (map == MAP_FAILED) {
-//         perror("mmap");
-//         return -1;
-//     }
-
-//     memcpy(map, &hdr, sizeof(hdr));
-
-//     offset = sizeof(hdr);
-
-//     for (i = 0; i < active_nr; ++i) {
-//         re = active_entry[i];
-//         size = re_size(re);
-//         memcpy(map + offset, re, size);
-//         offset += size;
-//         // free(re);
-//     }
-
-//     munmap(map, fd_size);
-//     close(fd);
-
-//     free(active_entry);
-//     return 0;
-// }
 
 static struct stat st;
 // static char *tmpfilename = "tmp.txt";
@@ -399,8 +328,8 @@ int write_records_encry(void)
     plain_size = cal_records_len();
     cipher_size = plain_size + 16;
 
-    plaintext = (unsigned char *)malloc(plain_size);
-    ciphertext = (unsigned char *)malloc(cipher_size);
+    plaintext = (unsigned char *)xmalloc(plain_size);
+    ciphertext = (unsigned char *)xmalloc(cipher_size);
 
     copy_records_to_buffer(&plaintext); 
     if (plaintext == NULL) {
@@ -467,32 +396,3 @@ int write_records(void)
     close(fd);
     return 0;
 }
-
-
-
-// int main(int argc, char* argv[])
-// {
-//     // init_write_record_map();
-//     unsigned char *key = (unsigned char *)"01234567890123456789012345678901";
-//     unsigned char *iv = (unsigned char *)"0123456789012345";
-//     int entries;
-//     enc_ctx_init(key, iv);
-
-//     // entries = read_records_decry();
-
-//     // if (entries < 0) {
-//     //     return error("read_record failed");
-//     // }
-
-//     write_records_encry();
-//     read_records_decry();
-
-
-//     cleanup();
-
-
-//     // write_records();
-//     // init_records_encry();
-
-//     return 0;
-// }
