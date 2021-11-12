@@ -64,6 +64,7 @@ extern char * init_passwd(void);
 /* utility */
 extern int error(const char*string);
 extern void *xmalloc(size_t size);
+extern void xfree(void *ptr);
 
 
 // static char *xstrdup(char *ori)
@@ -72,8 +73,3 @@ extern void *xmalloc(size_t size);
 // }
 
 
-// static void xfree(void *ptr)
-// {
-//     if (ptr)
-//         free(ptr);
-// }

@@ -3,7 +3,6 @@
 
 static char *passwdfile = "passwd.txt";
 
-
 static int tag_compare(const char *tag1, int len1, const char *tag2, int len2)
 {
     int len = len1 < len2 ? len1 : len2 ;
