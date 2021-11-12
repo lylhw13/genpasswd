@@ -22,3 +22,8 @@ void xfree(void *ptr)
     if (ptr)
         free(ptr);
 }
+
+// static char *xstrdup(char *ori)
+// {
+//    return strcpy( xmalloc( strlen( ori) + 1), ori);
+// }

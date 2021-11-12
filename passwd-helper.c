@@ -14,7 +14,7 @@ char * init_passwd(void)
     int state = 0;
 
     for (i = 0 ;i < 3 ; ++i) {
-        passwd = getpass("New password: ");
+        passwd = getpass("New password for database: ");
         if (strlen(passwd) > PASSWD_LEN) {
             printf("Your passwd is too long. The max length is %d\n", PASSWD_LEN);
             continue;
@@ -32,7 +32,7 @@ char * init_passwd(void)
 
         strcpy(pwd_local, passwd);
 
-        passwd = getpass("Retype new password: ");
+        passwd = getpass("Retype new password for database: ");
         if (strcmp(pwd_local, passwd)) {
             puts("Sorry, passwords do not match.");
             continue;
@@ -46,14 +46,3 @@ char * init_passwd(void)
     else
         return NULL;
 }
-
-// char *get_passwd()
-// {
-//     return NULL;
-// }
-
-// int main()
-// {
-//     init_passwd();
-//     return 0;
-// }

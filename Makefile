@@ -3,7 +3,7 @@ CFLAGS = -Wall
 LIBS = -lssl -lcrypto
 
 ifdef DEBUG
-CFLAGS += -g 
+CFLAGS += -g -DDEBUG
 endif
 
 PROG = genpasswd.out

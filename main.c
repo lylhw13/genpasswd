@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
         goto out1;
     }
     else if (op_type == INSERT_RECORDS) {
-        printf("password %s tag %s\n", passwd, tag);
+        // printf("password %s tag %s\n", passwd, tag);
         add_entry_by_tag(tag);
         tag_hash = sha_to_hex(sha512_multi_salt(passwd, tag, hashtimes));
         printf("The password for tag %s is %.*s\n", tag, taghash_len, tag_hash);

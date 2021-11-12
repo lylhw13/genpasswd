@@ -65,11 +65,3 @@ extern char * init_passwd(void);
 extern int error(const char*string);
 extern void *xmalloc(size_t size);
 extern void xfree(void *ptr);
-
-
-// static char *xstrdup(char *ori)
-// {
-//    return strcpy( xmalloc( strlen( ori) + 1), ori);
-// }
-
-
