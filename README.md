@@ -1,3 +1,22 @@
+# Principle
+
+Two type of passwd:
+- Passwd for database. 
+
+    The passwd need user to input. It will be used to access database and generate passwd for a specific tag.
+
+    ```txt
+    passwd for database -> sha512(passwd) -> passwd-hash -> key, iv -> aes encrypt database
+    ```
+
+- Passwd for tag
+
+    The passwd is generate for the tag.
+
+    ```txt
+    passwd for database -> sha512(passwd + tag) -> new-hash -> first len chars as the passwd for tag
+    ```
+# Usage
 ```txt
 Usage: genpasswd [OPTION][ARG]
    or: genpasswd [OPTION]
@@ -11,34 +30,39 @@ Usage: genpasswd [OPTION][ARG]
     without argument, the program will generate a random password
 ```
 
-
-procedure
-1. parse argument
-2. configure file hash times aes key start iv start password length   // to do later
-3. generate a random password
-4. password hash + tag hash
-5. hash times greater than 1e6
-6. basic procedure
-
-Two type of passwd:
-- Passwd for database. 
-
-    The passwd need user to input. It will be used to access database and generate passwd for specific tag.
-
-- Passwd for tag
-
-    The passwd is generate for specific tag.
-
+# Example
+## Generate a random password
 ```sh
-$ ./genpasswd.out 
+$ ./genpasswd
 Random passwd is fdf4ab4f24eb0e75
-$ ./genpasswd.out -i
-init the database
-New password: 
-Retype new password: 
+```
+## Initdatabase
+```bash
+./genpasswd -i
+New password for database: 
+Retype new password for database: 
 Init records successed
-$ ./genpasswd.out -t google
-genpasswd for google, and add it to database
-Password: 
-The password for tag google is cf048d00fab0f14f
+```
+## Generate a passwd for a tag
+```bash
+$ ./genpasswd -t google
+Database Password: 
+The password for google is cf048d00fab0f14f
+
+$ ./genpasswd -t baidu
+Database Password: 
+The password for baidu is 7e106a931a7a6b0f
+```
+## List all tags
+```bash
+$ ./genpasswd -l
+Database Password: 
+1 baidu
+2 google
+```
+## Remove one tag
+```bash
+$ ./genpasswd -r baidu
+Database Password: 
+remove baidu from database
 ```

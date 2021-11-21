@@ -95,20 +95,20 @@ int main(int argc, char *argv[])
         switch (c)
         {
         case 'i':
-            puts("init the database");
+            // puts("init the database");
             op_type = INIT_RECORDS; 
             break;
         case 'l':
-            puts("list all tags");
+            // puts("list all tags");
             op_type = LIST_RECORDS;
             break;
         case 't':
-            printf("genpasswd for %s, and add it to database\n", optarg);
+            // printf("genpasswd for %s, and add it to database\n", optarg);
             tag = optarg;
             op_type = INSERT_RECORDS;
             break;
         case 'r':
-            printf("remove %s from database\n", optarg);
+            // printf("remove %s from database\n", optarg);
             tag = optarg;
             op_type = REMOVE_RECORDS;
             break;
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
     /* verify password three times */
     passwd_hash = NULL;
     for (i = 0; i < 3; ++i) {
-        passwd = getpass("Password: ");
+        passwd = getpass("Database Password: ");
         passwd_hash = init_ctx(passwd);
 
         entries = read_records_decry();
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
 
     if (op_type == LIST_RECORDS) {
         if (entries == 0)
-            printf("%s\n", "There no records.");
+            printf("%s\n", "There no records");
         for (i = 0; i < active_nr; ++i) 
         {
             re = active_entry[i];
@@ -183,13 +183,13 @@ int main(int argc, char *argv[])
         goto out1;
     }
     else if (op_type == INSERT_RECORDS) {
-        // printf("password %s tag %s\n", passwd, tag);
         add_entry_by_tag(tag);
         tag_hash = sha_to_hex(sha512_multi_salt(passwd, tag, hashtimes));
-        printf("The password for tag %s is %.*s\n", tag, taghash_len, tag_hash);
+        printf("The password for %s is %.*s\n", tag, taghash_len, tag_hash);
     }
     else if (op_type == REMOVE_RECORDS) {
         remove_entry_by_tag(tag);
+        printf("remove %s from database\n", tag);
     }
 
 // out:

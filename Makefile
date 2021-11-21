@@ -6,7 +6,7 @@ ifdef DEBUG
 CFLAGS += -g -DDEBUG
 endif
 
-PROG = genpasswd.out
+PROG = genpasswd
 SRC = ${wildcard *.h *.c}
 
 all: $(PROG)

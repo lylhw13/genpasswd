@@ -1,7 +1,7 @@
 #include "generic.h"
 #include "encrypt.h"
 
-static char *passwdfile = "passwd.txt";
+static char *passwdfile = ".passwd.database";
 
 static int tag_compare(const char *tag1, int len1, const char *tag2, int len2)
 {
@@ -106,7 +106,6 @@ void remove_entry_by_id(unsigned int pos)
         memmove(active_entry + pos - 1, active_entry + pos, (active_nr - pos) * sizeof(struct record_entry*));
         active_nr--;
     }
-    // return 0;
 }
 
 void remove_entry_by_tag(char *tag)
@@ -138,7 +137,6 @@ static int cal_records_len()
 }
 
 static struct stat st;
-// static char *tmpfilename = "tmp.txt";
 
 int parse_record_from_buffer(char *map)
 {
@@ -158,7 +156,7 @@ int parse_record_from_buffer(char *map)
         goto unmap;
     }
 
-    printf("%d %d\n", hdr->version, hdr->entries);
+    // printf("%d %d\n", hdr->version, hdr->entries);
 
     active_nr = hdr->entries;
     active_alloc = alloc_nr(active_nr);
@@ -170,14 +168,13 @@ int parse_record_from_buffer(char *map)
         struct record_entry *re = (struct record_entry *)(map + offset);
         active_entry[i] = re;
         offset = offset + re_size(re);
-        printf("%d %s\n", re->taglen, re->tag);
+        // printf("%d %s\n", re->taglen, re->tag);
     }
     return active_nr;
 
 unmap:
     munmap(map, size);
     return 0;
-    // return error("parse record failed");
 }
 
 void copy_records_to_buffer(unsigned char **buf)
@@ -195,7 +192,7 @@ void copy_records_to_buffer(unsigned char **buf)
         size = re_size(re);
         memcpy(*buf + offset, re, size);
         offset += size;
-        printf("copy %d %d %s\n", (int)offset, re->taglen, re->tag);
+        // printf("copy %d %d %s\n", (int)offset, re->taglen, re->tag);
         // free(re);
     }
     // free(active_entry);
@@ -225,7 +222,7 @@ int read_content_and_decry(char **plaintext)
     if (map == MAP_FAILED)
         return error("mmap failed");
 
-    BIO_dump_fp(stdout, (const char*)map, size);
+    // BIO_dump_fp(stdout, (const char*)map, size);
 
     decryptedtext = (unsigned char*) malloc(size);
 
@@ -238,7 +235,7 @@ int read_content_and_decry(char **plaintext)
     
     *plaintext = (char *)decryptedtext;
 
-    BIO_dump_fp(stdout, (const char *)decryptedtext, decryptedtext_len);
+    // BIO_dump_fp(stdout, (const char *)decryptedtext, decryptedtext_len);
 
     return decryptedtext_len;
 }
@@ -335,8 +332,8 @@ int write_records_encry(void)
     }
     cipher_size = encry(plaintext, plain_size, ciphertext);
 
-    BIO_dump_fp(stderr, (const char *)plaintext, plain_size);
-    BIO_dump_fp(stderr, (const char *)ciphertext, cipher_size);
+    // BIO_dump_fp(stderr, (const char *)plaintext, plain_size);
+    // BIO_dump_fp(stderr, (const char *)ciphertext, cipher_size);
 
     fd = open(passwdfile, O_RDWR | O_CREAT | O_TRUNC, 0600);
     if (fd < 0) {
