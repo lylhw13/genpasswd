@@ -1,3 +1,6 @@
+# Profile
+This is a program to generate a password base on a tag.  这是一个基于标签的密码生成本。
+
 # Principle
 
 Two type of passwd:
