@@ -66,8 +66,6 @@ static char * init_ctx(char *passwd)
     memcpy(iv, hash + iv_offset, IV_LEN);
     iv[IV_LEN] = '\0';
 
-    // printf("key is %s\n", key);
-    // printf("iv is %s\n", iv);
     enc_ctx_init(key, iv);
     return hash;
 }
@@ -95,20 +93,16 @@ int main(int argc, char *argv[])
         switch (c)
         {
         case 'i':
-            // puts("init the database");
             op_type = INIT_RECORDS; 
             break;
         case 'l':
-            // puts("list all tags");
             op_type = LIST_RECORDS;
             break;
         case 't':
-            // printf("genpasswd for %s, and add it to database\n", optarg);
             tag = optarg;
             op_type = INSERT_RECORDS;
             break;
         case 'r':
-            // printf("remove %s from database\n", optarg);
             tag = optarg;
             op_type = REMOVE_RECORDS;
             break;
@@ -192,11 +186,9 @@ int main(int argc, char *argv[])
         printf("remove %s from database\n", tag);
     }
 
-// out:
     write_records_encry();
 out1:
     cleanup();
-// out2:
     unlink(LOCK_FILE);
     return 0;
 }

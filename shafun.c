@@ -68,26 +68,3 @@ unsigned char * sha512_multi_salt(const char *passwd, const char *salt, int num)
     free(buffer);
     return res;
 }
-
-// int main()
-// {
-//     char *str = "123";
-//     char *salt = "hahaha";
-//     char *res;
-//     int num = 1;
-
-//     res = sha512_once(str);
-//     printf("1 %s\n", sha_to_hex(res));
-
-//     res = sha512_multi(str, num);
-//     printf("%d\n%s\n",num, sha_to_hex(res));
-
-//     res = sha512_multi_salt(str, salt, num);
-//     printf("%d\n%s\n",num, sha_to_hex(res));    
-
-//     // for (int i=1; i <= 5; ++i) {
-//     //     res = sha512_multi(str, i);
-//     //     printf("%d %s\n", i, sha_to_hex(res));
-//     // }
-
-// }
